@@ -2,7 +2,7 @@ import json
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
-import httpretty as httpretty
+import httpretty
 import pytest
 import requests
 from django.test import Client
@@ -13,14 +13,14 @@ from server.apps.identity.models import User
 if TYPE_CHECKING:
     from tests.plugins.identity.user import (
         RegistrationData,
-        UserAssertion
+        UserAssertion,
     )
 
 
 @pytest.mark.django_db()
 def test_registration_page_renders(client: Client) -> None:
     """Basic `get` method works."""
-    response = client.get(reverse("identity:registration"))
+    response = client.get(reverse('identity:registration'))
     assert response.status_code == HTTPStatus.OK
 
 
@@ -43,22 +43,22 @@ def test_valid_registration(
 @pytest.mark.django_db()
 def test_valid_login(
     client: Client,
-    user_data: 'RegistrationData'
+    user_data: 'RegistrationData',
 ) -> None:
-    """Save User model"""
+    # Save User model.
     user = User(**user_data)
     user.save()
 
-    """Get data for login"""
+    # Get data for login.
     login_data = {
         'username': user_data['email'],
-        'password': user_data['password']
+        'password': user_data['password'],
     }
 
-    """Login"""
+    # Login.
     client.force_login(user)
 
-    """Check user login."""
+    # Check user login.
     response = client.post(
         reverse('identity:login'),
         data=login_data,
@@ -73,7 +73,7 @@ def mock_server_users(registration_data):
     """Get photos from json_server."""
     registration_data['date_of_birth'] = str(registration_data['date_of_birth'])
     return requests.post(
-        f'http://localhost:3000/users',
+        'http://localhost:3000/users',
         json=registration_data,
         timeout=4,
     ).json()
@@ -91,7 +91,7 @@ def test_users_adding(
     httpretty.register_uri(
         httpretty.POST,
         'https://jsonplaceholder.typicode.com/users',
-        body=json.dumps(mock_server_users, default=str)
+        body=json.dumps(mock_server_users, default=str),
     )
 
     response = client.post(

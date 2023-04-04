@@ -18,7 +18,7 @@ from server.apps.identity.models import User
 def mock_photos():
     """Get photos from json_server."""
     return requests.get(
-        f'http://localhost:3000/photos',
+        'http://localhost:3000/photos',
         timeout=3,
     ).json()
 
@@ -43,4 +43,3 @@ def test_pictures_dashboard_content(
     assert response.status_code == HTTPStatus.OK
     assert len(response.context['pictures']) == len(mock_photos)
     assert response.context['pictures'] == mock_photos
-

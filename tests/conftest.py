@@ -39,7 +39,7 @@ def user_data(user_data_factory, faker_seed):
 
 @pytest.fixture()
 def registration_data(user_data: RegistrationData) -> RegistrationData:
-    """User data with passwords for registration"""
+    """User data with passwords for registration."""
     user_data['password1'] = user_data['password']
     user_data['password2'] = user_data['password']
 
@@ -63,6 +63,7 @@ def assert_correct_user() -> UserAssertion:
                 assert getattr(user, field_name) == data_value
 
     return factory
+
 
 @pytest.fixture()
 def db_user(user_data: 'RegistrationData') -> 'RegistrationData':
