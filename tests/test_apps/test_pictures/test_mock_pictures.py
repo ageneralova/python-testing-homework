@@ -1,10 +1,6 @@
 import json
 from http import HTTPStatus
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from tests.plugins.identity.user import UserData
-
+from tests.plugins.identity.user import RegistrationData
 import httpretty
 import pytest
 import requests
@@ -24,9 +20,9 @@ def mock_photos():
 
 
 @pytest.mark.django_db()
-@httpretty.activate
+@httpretty.activate  # type: ignore[misc]
 def test_pictures_dashboard_content(
-    db_user: 'UserData',
+    db_user: 'RegistrationData',
     client: Client,
     mock_photos,
 ) -> None:

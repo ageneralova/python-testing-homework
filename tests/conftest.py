@@ -66,7 +66,7 @@ def assert_correct_user() -> UserAssertion:
 
 
 @pytest.fixture()
-def db_user(user_data: 'RegistrationData') -> 'RegistrationData':
+def db_user(user_data: 'RegistrationData') -> 'RegistrationData':  # type: ignore[misc]
     """Inserts User to db and deletes after test."""
     user = User.objects.create(**user_data)
     yield user_data

@@ -75,7 +75,7 @@ def mock_server_users(registration_data):
 
 
 @pytest.mark.django_db()
-@httpretty.activate
+@httpretty.activate  # type: ignore[misc]
 def test_users_adding(
     client: Client,
     user_data: 'User',
