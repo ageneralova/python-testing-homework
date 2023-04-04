@@ -39,7 +39,7 @@ def test_valid_login(
     client: Client,
     user_data: 'RegistrationData',
 ) -> None:
-    """Test whether correct user can log in"""
+    """Test whether correct user can log in."""
     # Save User model.
     user = User(**user_data)
     user.save()
