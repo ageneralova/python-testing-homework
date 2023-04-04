@@ -9,6 +9,7 @@ from tests.plugins.identity.user import RegData, UserAssertion
 
 
 def pytest_generate_tests(metafunc):
+    """Set env."""
     os.environ['DJANGO_SETTINGS_MODULE'] = 'server.settings'
 
 
