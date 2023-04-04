@@ -1,7 +1,10 @@
+import json
 from http import HTTPStatus
 from typing import TYPE_CHECKING
 
+import httpretty as httpretty
 import pytest
+import requests
 from django.test import Client
 from django.urls import reverse
 
@@ -63,3 +66,36 @@ def test_valid_login(
 
     assert response.status_code == HTTPStatus.FOUND
     assert response.get('Location') == reverse('pictures:dashboard')
+
+
+@pytest.fixture()
+def mock_server_users(registration_data):
+    """Get photos from json_server."""
+    registration_data['date_of_birth'] = str(registration_data['date_of_birth'])
+    return requests.post(
+        f'http://localhost:3000/users',
+        json=registration_data,
+        timeout=4,
+    ).json()
+
+
+@pytest.mark.django_db()
+@httpretty.activate
+def test_users_adding(
+    client: Client,
+    user_data: 'User',
+    registration_data: 'RegistrationData',
+    mock_server_users,
+) -> None:
+    """Check users adding."""
+    httpretty.register_uri(
+        httpretty.POST,
+        'https://jsonplaceholder.typicode.com/users',
+        body=json.dumps(mock_server_users, default=str)
+    )
+
+    response = client.post(
+        reverse('identity:registration'),
+        data=registration_data,
+    )
+    assert response.status_code == HTTPStatus.FOUND
