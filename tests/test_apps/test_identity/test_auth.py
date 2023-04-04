@@ -8,7 +8,7 @@ from django.test import Client
 from django.urls import reverse
 
 from server.apps.identity.models import User
-from tests.plugins.identity.user import RegistrationData, UserAssertion
+from tests.plugins.identity.user import RegData, UserAssertion
 
 
 @pytest.mark.django_db()
@@ -21,7 +21,7 @@ def test_registration_page_renders(client: Client) -> None:
 @pytest.mark.django_db()
 def test_valid_registration(
     client: Client,
-    registration_data: 'RegistrationData',
+    registration_data: 'RegData',
     assert_correct_user: 'UserAssertion',
 ) -> None:
     """Test that registration works with correct user data."""
@@ -37,7 +37,7 @@ def test_valid_registration(
 @pytest.mark.django_db()
 def test_valid_login(
     client: Client,
-    user_data: 'RegistrationData',
+    user_data: 'RegData',
 ) -> None:
     """Test whether correct user can log in."""
     # Save User model.
@@ -79,7 +79,7 @@ def mock_server_users(registration_data):
 def test_users_adding(
     client: Client,
     user_data: 'User',
-    registration_data: 'RegistrationData',
+    registration_data: 'RegData',
     mock_server_users,
 ) -> None:
     """Check users adding."""

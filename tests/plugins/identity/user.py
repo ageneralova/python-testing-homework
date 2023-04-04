@@ -5,7 +5,7 @@ from typing_extensions import TypeAlias
 
 
 @final
-class RegistrationData(TypedDict, total=False):
+class RegData(TypedDict, total=False):
     """Represent the user data that is required to create a new user."""
 
     email: str
@@ -21,4 +21,4 @@ class RegistrationData(TypedDict, total=False):
     password2: Optional[str]
 
 
-UserAssertion: TypeAlias = Callable[[RegistrationData], None]
+UserAssertion: TypeAlias = Callable[[RegData], None]

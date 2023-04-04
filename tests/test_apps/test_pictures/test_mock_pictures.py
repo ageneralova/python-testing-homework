@@ -6,8 +6,8 @@ import pytest
 import requests
 from django.test import Client
 from django.urls import reverse
-from tests.plugins.identity.user import RegistrationData
 from server.apps.identity.models import User
+from tests.plugins.identity.user import RegData
 
 
 @pytest.fixture()
@@ -22,7 +22,7 @@ def mock_photos():
 @pytest.mark.django_db()
 @httpretty.activate  # type: ignore[misc]
 def test_pictures_dashboard_content(
-    db_user: 'RegistrationData',
+    db_user: 'RegData',
     client: Client,
     mock_photos,
 ) -> None:

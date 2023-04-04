@@ -3,14 +3,14 @@ from mimesis import Field, Schema
 from mimesis.enums import Locale
 
 from server.apps.identity.models import User
-from tests.plugins.identity.user import RegistrationData, UserAssertion
+from tests.plugins.identity.user import RegData, UserAssertion
 
 
 @pytest.fixture()
 def user_data_factory():
     """Fabricate user data."""
 
-    def factory(faker_seed, **fields) -> RegistrationData:
+    def factory(faker_seed, **fields) -> RegData:
         mf = Field(locale=Locale.RU, seed=faker_seed)
         password = mf('password')  # by default passwords are equal
         schema = Schema(schema=lambda: {
@@ -38,7 +38,7 @@ def user_data(user_data_factory, faker_seed):
 
 
 @pytest.fixture()
-def registration_data(user_data: RegistrationData) -> RegistrationData:
+def registration_data(user_data: RegData) -> RegData:
     """User data with passwords for registration."""
     user_data['password1'] = user_data['password']
     user_data['password2'] = user_data['password']
@@ -50,7 +50,7 @@ def registration_data(user_data: RegistrationData) -> RegistrationData:
 def assert_correct_user() -> UserAssertion:
     """Check that user created correctly."""
 
-    def factory(expected: RegistrationData) -> None:
+    def factory(expected: RegData) -> None:
         user = User.objects.get(email=expected['email'])
         # Special fields:
         assert user.id
@@ -66,7 +66,7 @@ def assert_correct_user() -> UserAssertion:
 
 
 @pytest.fixture()
-def db_user(user_data: 'RegistrationData') -> 'RegistrationData':  # type: ignore[misc]
+def db_user(user_data: 'RegData') -> 'RegData':  # type: ignore[misc]
     """Inserts User to db and deletes after test."""
     user = User.objects.create(**user_data)
     yield user_data
