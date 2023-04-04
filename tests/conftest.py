@@ -7,7 +7,9 @@ from mimesis.enums import Locale
 from server.apps.identity.models import User
 from tests.plugins.identity.user import RegData, UserAssertion
 
-os.putenv('DJANGO_SETTINGS_MODULE', 'server.settings')
+
+def pytest_generate_tests(metafunc):
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'server.settings'
 
 
 @pytest.fixture()
