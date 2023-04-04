@@ -1,6 +1,5 @@
 import json
 from http import HTTPStatus
-from typing import TYPE_CHECKING
 
 import httpretty
 import pytest
@@ -9,12 +8,7 @@ from django.test import Client
 from django.urls import reverse
 
 from server.apps.identity.models import User
-
-if TYPE_CHECKING:
-    from tests.plugins.identity.user import (
-        RegistrationData,
-        UserAssertion,
-    )
+from tests.plugins.identity.user import RegistrationData, UserAssertion
 
 
 @pytest.mark.django_db()
@@ -45,6 +39,7 @@ def test_valid_login(
     client: Client,
     user_data: 'RegistrationData',
 ) -> None:
+    """Test whether correct user can log in"""
     # Save User model.
     user = User(**user_data)
     user.save()

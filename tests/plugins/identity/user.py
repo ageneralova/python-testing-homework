@@ -22,4 +22,3 @@ class RegistrationData(TypedDict, total=False):
 
 
 UserAssertion: TypeAlias = Callable[[RegistrationData], None]
-
