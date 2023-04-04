@@ -1,12 +1,12 @@
 import json
 from http import HTTPStatus
-from tests.plugins.identity.user import RegistrationData
+
 import httpretty
 import pytest
 import requests
 from django.test import Client
 from django.urls import reverse
-
+from tests.plugins.identity.user import RegistrationData
 from server.apps.identity.models import User
 
 
