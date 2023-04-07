@@ -1,4 +1,4 @@
 pytest_plugins = [
-    'plugins.django_settings',
-    'plugins.identity.user',
+    'tests.plugins.django_settings',
+    'tests.plugins.identity.user',
 ]
