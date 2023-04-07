@@ -7,10 +7,12 @@ from mimesis.enums import Locale
 from server.apps.identity.models import User
 from tests.plugins.identity.user import RegData, UserAssertion
 
-
-def pytest_generate_tests(metafunc):
-    """Set env."""
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'server.settings'
+# pytest_plugins = [
+#     # Should be the first custom one:
+#     'plugins.django_settings',
+#
+#     # TODO: add your own plugins here!
+# ]
 
 
 @pytest.fixture()
