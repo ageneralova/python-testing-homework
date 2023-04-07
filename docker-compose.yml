@@ -28,6 +28,8 @@ services:
         - ./docker/jsonserver:/data
       restart: always
       command: -H 0.0.0.0 -p 3000 -w db.json -r routes.json --delay 2000
+      networks:
+        - webnet
 
   web:
     <<: &web
