@@ -1,13 +1,33 @@
 import pytest
+import datetime as dt
 from mimesis import Field, Schema
 from mimesis.enums import Locale
 
+from typing_extensions import TypeAlias
 from server.apps.identity.models import User
-from tests.plugins.identity.user import RegData, UserAssertion
+from typing import Callable, Optional, TypedDict, final
 
+
+@final
+class RegData(TypedDict, total=False):
+    """Represent the user data that is required to create a new user."""
+
+    email: str
+    first_name: str
+    last_name: str
+    date_of_birth: dt.datetime
+    address: str
+    job_title: str
+    phone: str
+    phone_type: int
+    password: str
+    password1: Optional[str]
+    password2: Optional[str]
+
+
+UserAssertion: TypeAlias = Callable[[RegData], None]
 pytest_plugins = [
     'plugins.django_settings',
-    'plugins.identity.user',
 ]
 
 
