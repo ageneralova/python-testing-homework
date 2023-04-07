@@ -8,7 +8,7 @@ from django.test import Client
 from django.urls import reverse
 
 from server.apps.identity.models import User
-from tests.plugins.identity.user import RegData
+from tests.user import RegData
 
 
 @pytest.fixture()
