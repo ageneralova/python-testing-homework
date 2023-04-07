@@ -68,7 +68,7 @@ def mock_server_users(registration_data):
     """Get photos from json_server."""
     registration_data['date_of_birth'] = str(registration_data['date_of_birth'])
     return requests.post(
-        'http://json-server:3000/users',
+        'http://json-server/users',
         json=registration_data,
         timeout=4,
     ).json()
@@ -85,7 +85,7 @@ def test_users_adding(
     """Check users adding."""
     httpretty.register_uri(
         httpretty.POST,
-        'http://json-server:3000/users',
+        'https://jsonplaceholder.typicode.com/users',
         body=json.dumps(mock_server_users, default=str),
     )
 

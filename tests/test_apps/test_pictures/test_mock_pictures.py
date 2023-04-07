@@ -15,7 +15,7 @@ from tests.plugins.identity.user import RegData
 def mock_photos():
     """Get photos from json_server."""
     return requests.get(
-        'http://json-server:3000/photos',
+        'http://json-server/photos',
         timeout=3,
     ).json()
 
@@ -30,7 +30,7 @@ def test_pictures_dashboard_content(
     """Check dashboard content."""
     httpretty.register_uri(
         httpretty.GET,
-        'http://json-server:3000/photos',
+        'https://jsonplaceholder.typicode.com/photos',
         body=json.dumps(mock_photos),
     )
     user = User.objects.get(email=db_user['email'])
