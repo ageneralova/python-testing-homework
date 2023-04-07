@@ -85,7 +85,7 @@ def test_users_adding(
     """Check users adding."""
     httpretty.register_uri(
         httpretty.POST,
-        'https://jsonplaceholder.typicode.com/users',
+        'http://localhost:3000/users',
         body=json.dumps(mock_server_users, default=str),
     )
 

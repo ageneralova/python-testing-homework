@@ -30,7 +30,7 @@ def test_pictures_dashboard_content(
     """Check dashboard content."""
     httpretty.register_uri(
         httpretty.GET,
-        'https://jsonplaceholder.typicode.com/photos',
+        'http://localhost:3000/photos',
         body=json.dumps(mock_photos),
     )
     user = User.objects.get(email=db_user['email'])
