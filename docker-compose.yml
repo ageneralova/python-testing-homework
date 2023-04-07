@@ -28,7 +28,7 @@ services:
         networks:
           - webnet
         ports:
-          - 3000:80
+          - "3000:3000"
         command: -H 0.0.0.0 -p 80 -w db.json -r routes.json --delay 2000
 
   web:
