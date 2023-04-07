@@ -6,8 +6,9 @@ from server.apps.identity.models import User
 from tests.plugins.identity.user import RegData, UserAssertion
 
 pytest_plugins = [
-    'plugins.django_settings'
+    'plugins.django_settings',
 ]
+
 
 @pytest.fixture()
 def user_data_factory():
