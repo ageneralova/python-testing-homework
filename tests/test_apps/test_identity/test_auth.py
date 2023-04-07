@@ -1,30 +1,27 @@
+import json
 from http import HTTPStatus
-from typing import TYPE_CHECKING
 
+import httpretty
 import pytest
+import requests
 from django.test import Client
 from django.urls import reverse
 
 from server.apps.identity.models import User
-
-if TYPE_CHECKING:
-    from tests.plugins.identity.user import (
-        RegistrationData,
-        UserAssertion
-    )
+from tests.plugins.identity.user import RegData, UserAssertion
 
 
 @pytest.mark.django_db()
 def test_registration_page_renders(client: Client) -> None:
     """Basic `get` method works."""
-    response = client.get(reverse("identity:registration"))
+    response = client.get(reverse('identity:registration'))
     assert response.status_code == HTTPStatus.OK
 
 
 @pytest.mark.django_db()
 def test_valid_registration(
     client: Client,
-    registration_data: 'RegistrationData',
+    registration_data: 'RegData',
     assert_correct_user: 'UserAssertion',
 ) -> None:
     """Test that registration works with correct user data."""
@@ -40,22 +37,23 @@ def test_valid_registration(
 @pytest.mark.django_db()
 def test_valid_login(
     client: Client,
-    user_data: 'RegistrationData'
+    user_data: 'RegData',
 ) -> None:
-    """Save User model"""
+    """Test whether correct user can log in."""
+    # Save User model.
     user = User(**user_data)
     user.save()
 
-    """Get data for login"""
+    # Get data for login.
     login_data = {
         'username': user_data['email'],
-        'password': user_data['password']
+        'password': user_data['password'],
     }
 
-    """Login"""
+    # Login.
     client.force_login(user)
 
-    """Check user login."""
+    # Check user login.
     response = client.post(
         reverse('identity:login'),
         data=login_data,
@@ -63,3 +61,36 @@ def test_valid_login(
 
     assert response.status_code == HTTPStatus.FOUND
     assert response.get('Location') == reverse('pictures:dashboard')
+
+
+@pytest.fixture()
+def mock_server_users(registration_data):
+    """Get photos from json_server."""
+    registration_data['date_of_birth'] = str(registration_data['date_of_birth'])
+    return requests.post(
+        'http://json-server/users',
+        json=registration_data,
+        timeout=4,
+    ).json()
+
+
+@pytest.mark.django_db()
+@httpretty.activate  # type: ignore[misc]
+def test_users_adding(
+    client: Client,
+    user_data: 'User',
+    registration_data: 'RegData',
+    mock_server_users,
+) -> None:
+    """Check users adding."""
+    httpretty.register_uri(
+        httpretty.POST,
+        'https://jsonplaceholder.typicode.com/users',
+        body=json.dumps(mock_server_users, default=str),
+    )
+
+    response = client.post(
+        reverse('identity:registration'),
+        data=registration_data,
+    )
+    assert response.status_code == HTTPStatus.FOUND
