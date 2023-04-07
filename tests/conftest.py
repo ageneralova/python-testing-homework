@@ -1,18 +1,9 @@
-import os
-
 import pytest
 from mimesis import Field, Schema
 from mimesis.enums import Locale
 
 from server.apps.identity.models import User
 from tests.plugins.identity.user import RegData, UserAssertion
-
-# pytest_plugins = [
-#     # Should be the first custom one:
-#     'plugins.django_settings',
-#
-#     # TODO: add your own plugins here!
-# ]
 
 
 @pytest.fixture()
